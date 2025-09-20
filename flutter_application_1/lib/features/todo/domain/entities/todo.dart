@@ -1,12 +1,12 @@
-import 'package:equatable/equatable.dart';
-
-class Todo extends Equatable {
-  final String id;
-  final String title;
-  final String description;
-  final bool isCompleted;
-  final DateTime createdAt;
-  final DateTime? updatedAt;
+/// Todo - Đối tượng chính của ứng dụng
+/// Chứa thông tin về một công việc cần làm
+class Todo {
+  final String id;           // ID duy nhất
+  final String title;        // Tiêu đề công việc
+  final String description;  // Mô tả chi tiết
+  final bool isCompleted;    // Đã hoàn thành chưa?
+  final DateTime createdAt;  // Thời gian tạo
+  final DateTime? updatedAt; // Thời gian cập nhật (có thể null)
 
   const Todo({
     required this.id,
@@ -17,6 +17,8 @@ class Todo extends Equatable {
     this.updatedAt,
   });
 
+  /// Tạo bản sao Todo với một số thông tin thay đổi
+  /// Ví dụ: todo.copyWith(isCompleted: true)
   Todo copyWith({
     String? id,
     String? title,
@@ -35,8 +37,38 @@ class Todo extends Equatable {
     );
   }
 
+  /// So sánh 2 Todo có giống nhau không
   @override
-  List<Object?> get props => [id, title, description, isCompleted, createdAt, updatedAt];
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    
+    return other is Todo &&
+        other.id == id &&
+        other.title == title &&
+        other.description == description &&
+        other.isCompleted == isCompleted &&
+        other.createdAt == createdAt &&
+        other.updatedAt == updatedAt;
+  }
+
+  /// Mã hash để sử dụng trong Map, Set
+  @override
+  int get hashCode {
+    return Object.hash(
+      id,
+      title,
+      description,
+      isCompleted,
+      createdAt,
+      updatedAt,
+    );
+  }
+
+  /// Hiển thị thông tin Todo dưới dạng text
+  @override
+  String toString() {
+    return 'Todo(id: $id, title: $title, isCompleted: $isCompleted)';
+  }
 }
 
 

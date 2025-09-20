@@ -47,11 +47,8 @@ dependencies:
   # UUID generation
   uuid: ^4.2.1
   
-  # Equatable for value equality
-  equatable: ^2.0.5
-  
-  # Functional programming
-  dartz: ^0.10.1
+  # Note: Removed equatable and dartz to maintain Clean Architecture
+  # Custom Result type and value equality implemented in domain layer
 
 dev_dependencies:
   flutter_test:

@@ -1,87 +1,88 @@
-import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failures.dart';
+import '../../domain/common/result.dart';
+import '../../domain/common/failures.dart';
 import '../../domain/entities/todo.dart';
 import '../../domain/repositories/todo_repository.dart';
 import '../datasources/todo_local_data_source.dart';
 import '../models/todo_model.dart';
 
+/// Implementation of TodoRepository using local data source
 class TodoRepositoryImpl implements TodoRepository {
   final TodoLocalDataSource localDataSource;
 
-  TodoRepositoryImpl({required this.localDataSource});
+  const TodoRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<Either<Failure, List<Todo>>> getAllTodos() async {
+  Future<Result<List<Todo>>> getAllTodos() async {
     try {
       final todoModels = await localDataSource.getAllTodos();
       final todos = todoModels.map((model) => model.toEntity()).toList();
-      return Right(todos);
+      return Success(todos);
     } catch (e) {
-      return Left(CacheFailure('Failed to get todos: ${e.toString()}'));
+      return Failure(CacheFailure('Failed to get todos: ${e.toString()}').message);
     }
   }
 
   @override
-  Future<Either<Failure, Todo>> getTodoById(String id) async {
+  Future<Result<Todo>> getTodoById(String id) async {
     try {
       final todoModel = await localDataSource.getTodoById(id);
-      return Right(todoModel.toEntity());
+      return Success(todoModel.toEntity());
     } catch (e) {
-      return Left(CacheFailure('Failed to get todo: ${e.toString()}'));
+      return Failure(CacheFailure('Failed to get todo: ${e.toString()}').message);
     }
   }
 
   @override
-  Future<Either<Failure, Todo>> createTodo(Todo todo) async {
+  Future<Result<Todo>> createTodo(Todo todo) async {
     try {
       final todoModel = TodoModel.fromEntity(todo);
       final createdTodo = await localDataSource.createTodo(todoModel);
-      return Right(createdTodo.toEntity());
+      return Success(createdTodo.toEntity());
     } catch (e) {
-      return Left(CacheFailure('Failed to create todo: ${e.toString()}'));
+      return Failure(CacheFailure('Failed to create todo: ${e.toString()}').message);
     }
   }
 
   @override
-  Future<Either<Failure, Todo>> updateTodo(Todo todo) async {
+  Future<Result<Todo>> updateTodo(Todo todo) async {
     try {
       final todoModel = TodoModel.fromEntity(todo);
       final updatedTodo = await localDataSource.updateTodo(todoModel);
-      return Right(updatedTodo.toEntity());
+      return Success(updatedTodo.toEntity());
     } catch (e) {
-      return Left(CacheFailure('Failed to update todo: ${e.toString()}'));
+      return Failure(CacheFailure('Failed to update todo: ${e.toString()}').message);
     }
   }
 
   @override
-  Future<Either<Failure, void>> deleteTodo(String id) async {
+  Future<Result<void>> deleteTodo(String id) async {
     try {
       await localDataSource.deleteTodo(id);
-      return const Right(null);
+      return const Success(null);
     } catch (e) {
-      return Left(CacheFailure('Failed to delete todo: ${e.toString()}'));
+      return Failure(CacheFailure('Failed to delete todo: ${e.toString()}').message);
     }
   }
 
   @override
-  Future<Either<Failure, List<Todo>>> getCompletedTodos() async {
+  Future<Result<List<Todo>>> getCompletedTodos() async {
     try {
       final todoModels = await localDataSource.getCompletedTodos();
       final todos = todoModels.map((model) => model.toEntity()).toList();
-      return Right(todos);
+      return Success(todos);
     } catch (e) {
-      return Left(CacheFailure('Failed to get completed todos: ${e.toString()}'));
+      return Failure(CacheFailure('Failed to get completed todos: ${e.toString()}').message);
     }
   }
 
   @override
-  Future<Either<Failure, List<Todo>>> getPendingTodos() async {
+  Future<Result<List<Todo>>> getPendingTodos() async {
     try {
       final todoModels = await localDataSource.getPendingTodos();
       final todos = todoModels.map((model) => model.toEntity()).toList();
-      return Right(todos);
+      return Success(todos);
     } catch (e) {
-      return Left(CacheFailure('Failed to get pending todos: ${e.toString()}'));
+      return Failure(CacheFailure('Failed to get pending todos: ${e.toString()}').message);
     }
   }
 }

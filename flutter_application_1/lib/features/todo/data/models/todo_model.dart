@@ -1,5 +1,7 @@
 import '../../domain/entities/todo.dart';
 
+/// Data model for Todo - handles JSON serialization/deserialization
+/// This is the data layer representation of the Todo entity
 class TodoModel extends Todo {
   const TodoModel({
     required super.id,
@@ -10,6 +12,7 @@ class TodoModel extends Todo {
     super.updatedAt,
   });
 
+  /// Creates a TodoModel from JSON data
   factory TodoModel.fromJson(Map<String, dynamic> json) {
     return TodoModel(
       id: json['id'] as String,
@@ -23,6 +26,7 @@ class TodoModel extends Todo {
     );
   }
 
+  /// Converts TodoModel to JSON data
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -34,6 +38,7 @@ class TodoModel extends Todo {
     };
   }
 
+  /// Creates a TodoModel from a Todo entity
   factory TodoModel.fromEntity(Todo todo) {
     return TodoModel(
       id: todo.id,
@@ -45,6 +50,7 @@ class TodoModel extends Todo {
     );
   }
 
+  /// Converts TodoModel to Todo entity
   Todo toEntity() {
     return Todo(
       id: id,

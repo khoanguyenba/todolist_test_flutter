@@ -1,30 +1,42 @@
-import 'package:equatable/equatable.dart';
 import '../../domain/entities/todo.dart';
 import 'todo_event.dart';
 
-abstract class TodoState extends Equatable {
+/// Lớp cơ sở cho tất cả các trạng thái Todo
+/// State đại diện cho trạng thái hiện tại của ứng dụng
+abstract class TodoState {
   const TodoState();
-
-  @override
-  List<Object> get props => [];
 }
 
-class TodoInitial extends TodoState {}
+/// Trạng thái ban đầu khi ứng dụng khởi động
+/// Chưa có dữ liệu gì cả
+class TodoInitial extends TodoState {
+  const TodoInitial();
 
-class TodoLoading extends TodoState {}
+  @override
+  String toString() => 'TodoInitial()';
+}
 
+/// Trạng thái đang tải dữ liệu
+/// Hiển thị loading spinner cho người dùng
+class TodoLoading extends TodoState {
+  const TodoLoading();
+
+  @override
+  String toString() => 'TodoLoading()';
+}
+
+/// Trạng thái đã tải thành công danh sách todos
+/// Chứa danh sách todos và bộ lọc hiện tại
 class TodoLoaded extends TodoState {
-  final List<Todo> todos;
-  final TodoFilter currentFilter;
+  final List<Todo> todos;           // Danh sách tất cả todos
+  final TodoFilter currentFilter;   // Bộ lọc hiện tại
 
   const TodoLoaded({
     required this.todos,
     this.currentFilter = TodoFilter.all,
   });
 
-  @override
-  List<Object> get props => [todos, currentFilter];
-
+  /// Lấy danh sách todos đã được lọc theo bộ lọc hiện tại
   List<Todo> get filteredTodos {
     switch (currentFilter) {
       case TodoFilter.completed:
@@ -36,15 +48,20 @@ class TodoLoaded extends TodoState {
         return todos;
     }
   }
+
+  @override
+  String toString() => 'TodoLoaded(todos: ${todos.length}, currentFilter: $currentFilter)';
 }
 
+/// Trạng thái lỗi khi có sự cố xảy ra
+/// Chứa thông báo lỗi để hiển thị cho người dùng
 class TodoError extends TodoState {
-  final String message;
+  final String message;  // Thông báo lỗi
 
   const TodoError({required this.message});
 
   @override
-  List<Object> get props => [message];
+  String toString() => 'TodoError(message: $message)';
 }
 
 

@@ -1,15 +1,29 @@
-import 'package:dartz/dartz.dart';
-import '../../../../core/errors/failures.dart';
+import '../common/result.dart';
 import '../entities/todo.dart';
 
+/// Repository interface for Todo operations
+/// This interface defines the contract for data access without external dependencies
 abstract class TodoRepository {
-  Future<Either<Failure, List<Todo>>> getAllTodos();
-  Future<Either<Failure, Todo>> getTodoById(String id);
-  Future<Either<Failure, Todo>> createTodo(Todo todo);
-  Future<Either<Failure, Todo>> updateTodo(Todo todo);
-  Future<Either<Failure, void>> deleteTodo(String id);
-  Future<Either<Failure, List<Todo>>> getCompletedTodos();
-  Future<Either<Failure, List<Todo>>> getPendingTodos();
+  /// Get all todos
+  Future<Result<List<Todo>>> getAllTodos();
+  
+  /// Get a specific todo by ID
+  Future<Result<Todo>> getTodoById(String id);
+  
+  /// Create a new todo
+  Future<Result<Todo>> createTodo(Todo todo);
+  
+  /// Update an existing todo
+  Future<Result<Todo>> updateTodo(Todo todo);
+  
+  /// Delete a todo by ID
+  Future<Result<void>> deleteTodo(String id);
+  
+  /// Get all completed todos
+  Future<Result<List<Todo>>> getCompletedTodos();
+  
+  /// Get all pending (incomplete) todos
+  Future<Result<List<Todo>>> getPendingTodos();
 }
 
 

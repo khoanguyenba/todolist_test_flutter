@@ -1,27 +1,30 @@
-import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
-import '../../../../core/errors/failures.dart';
-import '../../../../core/usecases/usecase.dart';
+import '../common/result.dart';
+import '../common/usecase.dart';
 import '../repositories/todo_repository.dart';
 
+/// Use Case: Xóa Todo
+/// Business logic để xóa một công việc khỏi danh sách
 class DeleteTodo implements UseCase<void, DeleteTodoParams> {
   final TodoRepository repository;
 
-  DeleteTodo(this.repository);
+  const DeleteTodo(this.repository);
 
+  /// Thực hiện xóa todo
   @override
-  Future<Either<Failure, void>> call(DeleteTodoParams params) async {
+  Future<Result<void>> call(DeleteTodoParams params) async {
     return await repository.deleteTodo(params.id);
   }
 }
 
-class DeleteTodoParams extends Equatable {
+/// Tham số cho DeleteTodo use case
+/// Chứa ID của Todo cần xóa
+class DeleteTodoParams {
   final String id;
 
   const DeleteTodoParams({required this.id});
 
   @override
-  List<Object> get props => [id];
+  String toString() => 'DeleteTodoParams(id: $id)';
 }
 
 

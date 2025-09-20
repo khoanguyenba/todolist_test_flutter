@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../usecases/usecase.dart';
 import '../../features/todo/data/datasources/todo_local_data_source.dart';
 import '../../features/todo/data/repositories/todo_repository_impl.dart';
 import '../../features/todo/domain/repositories/todo_repository.dart';
@@ -10,8 +9,10 @@ import '../../features/todo/domain/usecases/get_all_todos.dart';
 import '../../features/todo/domain/usecases/update_todo.dart';
 import '../../features/todo/presentation/bloc/todo_bloc.dart';
 
+/// Service locator instance for dependency injection
 final sl = GetIt.instance;
 
+/// Initialize all dependencies
 Future<void> init() async {
   // Features - Todo
   // Bloc
@@ -40,7 +41,7 @@ Future<void> init() async {
     () => TodoLocalDataSourceImpl(sharedPreferences: sl()),
   );
 
-  // External
+  // External dependencies
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);
 }
